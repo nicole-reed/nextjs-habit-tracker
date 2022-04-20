@@ -14,3 +14,458 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.navItems {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.navItem {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.navItem:hover{
+  color: rgb(44, 148, 245);
+  font-weight: bolder;
+}
+:root {
+  --primary-color: #333;
+  --secondary-color: #444;
+  --overlay-color: rgba(0, 0, 0, 0.7);
+}
+
+.landing {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* font-family: 'Catamaran', sans-serif; */
+  line-height: 1.6;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.3;
+}
+
+a {
+  color: #68b5e2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  width: 100%;
+}
+
+.cont {
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+.section-a {
+  margin: 2rem 0;
+}
+
+.section-a .cont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-a h1 {
+  font-size: 4rem;
+  color: var(--primary-color);
+}
+
+.section-a h4 {
+  margin: 1.5rem 0;
+}
+
+.section-b {
+  position: relative;
+  background: url('../public/habit-images/study.jpeg') no-repeat bottom center/cover;
+  height: 600px;
+}
+
+.section-b-inner {
+  color: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+  max-width: 860px;
+  padding: 5rem 0;
+}
+
+.section-b-inner h3 {
+  font-size: 1.5rem;
+  font-weight: 200;
+}
+
+.section-b-inner h2 {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  font-weight: 300;
+}
+
+.section-b-inner p {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  font-weight: 200;
+}
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--overlay-color);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--secondary-color);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 300;
+  border-radius: 30px;
+}
+
+.btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.section-c .gallery {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+.section-c .gallery :first-child {
+  /* grid-row-start: 1;
+  grid-row-end: 3; */
+  grid-row: 1/3;
+  grid-column: 1/3;
+}
+
+.section-c .gallery :nth-child(2) {
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+
+.section-c .gallery {
+  width: 100%;
+  height: 100%;
+}
+
+.section-footer {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 4rem 0;
+}
+
+.section-footer .cont {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}
+
+.section-footer h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 200;
+}
+
+.section-footer h3 {
+  margin-bottom: 0.7rem;
+  font-weight: 200;
+}
+
+.section-footer a {
+  line-height: 1.9;
+  color: #ccc;
+  font-weight: 200;
+}
+
+.section-footer a:hover {
+  color: #fff;
+  font-weight: 300;
+}
+
+.section-footer a > i {
+  color: #555;
+  margin-right: 0.5rem;
+}
+
+.section-footer a > i:hover {
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  /* .logo {
+    padding-top:
+  } */
+
+
+  .section-a .cont {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .section-a .cont div:first-child {
+    order: 2;
+  }
+
+  .section-a .cont div:nth-child(2) {
+    order: -1;
+  }
+
+  .section-a img {
+    width: 80%;
+    margin: auto;
+  }
+
+  .section-c .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .section-c .gallery a:first-child {
+    grid-row: 1/1;
+    grid-column: 1/1;
+  }
+
+  .section-c .gallery a:nth-child(2) {
+    grid-column: 2/4;
+    grid-row: 2/2;
+  }
+
+  .section-c .gallery a:last-child {
+    display: none;
+  }
+
+  .section-footer {
+    padding: 2rem 0;
+  }
+
+  .section-footer .cont {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+
+/* end landing page styles */
+
+table {
+    background-color: transparent;
+    margin: auto;
+    margin-bottom: 1rem;
+    width: 80%;
+}
+
+table th,
+table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+tbody tr:nth-of-type(odd) {
+    background-color: rgb(179, 208, 255, 0.3)
+}
+
+.habits {
+    margin: auto;
+}
+
+.habits button {
+    border-radius: 0.25rem;
+    border: 1px solid transparent;
+    padding-left: 0.4rem;
+    font-weight: lighter;
+}
+
+label {
+    padding-left: 0.4rem;
+}
+
+#calendar {
+    width: 80vw;
+    margin: auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .fc-daygrid-event {
+        font-size: .5em;
+    }
+    .fc-toolbar-chunk {
+        font-size: .75em;
+    }
+}
+
+
+/* Delete Modal Styles */
+
+  /* Float cancel and delete buttons and add an equal width */
+  .cancelbtn, .deletebtn {
+    float: left;
+    width: 50%;
+  }
+
+  /* Add a color to the cancel button */
+  .cancelbtn {
+    background-color: #ccc;
+    color: black;
+  }
+
+  /* Add a color to the delete button */
+  .deletebtn {
+    background-color: #f44336;
+  }
+
+  /* Add padding and center-align text to the container */
+  .container {
+    padding: 16px;
+    text-align: center;
+  }
+
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: #474e5d;
+    padding-top: 50px;
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* Style the horizontal ruler */
+  hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+
+  /* The Modal Close Button (x) */
+  .close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #f44336;
+    cursor: pointer;
+  }
+
+  /* Clear floats */
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  /* Change styles for cancel button and delete button on extra small screens */
+  @media screen and (max-width: 300px) {
+    .cancelbtn, .deletebtn {
+      width: 100%;
+    }
+  }
+
+  h1.lighter {
+    font-weight: 200;
+  }
+  h2.error {
+    color: #68b5e2;
+  }
+  h3.lighter {
+    font-weight: 200;
+  }
+  h4.lighter {
+    color: #68b5e2;
+    font-weight: 200;
+  }
+  h5 {
+    font-weight: 200;
+  }
+  p.lighter {
+    font-weight: 300;
+  }
+
+  .form-check-input:checked {
+    background-color: #68b5e2;
+    border-color: #68b5e2;
+  }
+/* 
+  .container {
+    min-height: 100vh;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .main {
+    padding: 5rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .footer {
+    width: 100%;
+    height: 100px;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .footer a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  } */
