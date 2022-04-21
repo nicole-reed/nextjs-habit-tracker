@@ -14,6 +14,7 @@ export default function Home() {
 
 
                 <main>
+
                     <h1>
                         Here is where today's habits will be displayed...
                 </h1>
