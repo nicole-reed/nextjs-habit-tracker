@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
-import { useSession, signIn, signOut } from "next-auth/react"
+// import { useSession, signIn, signOut } from "next-auth/react"
 import Image from 'next/image'
 
 import workout from '../public/habit-images/workout.jpeg'
@@ -12,8 +12,7 @@ import meditate from '../public/habit-images/meditate.jpeg'
 import water from '../public/habit-images/water.jpeg'
 
 export default function Welcome() {
-  const { data: session } = useSession()
-  console.log('session', session)
+  // const { data: session } = useSession()
   return (
     <div>
       <Head>

@@ -1,4 +1,6 @@
 import NextAuth from 'next-auth'
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/mongodb"
 import GoogleProvider from 'next-auth/providers/google'
 
 export default NextAuth({
@@ -9,6 +11,7 @@ export default NextAuth({
             clientSecret: process.env.GOOGLE_SECRET
         }),
     ],
+    adapter: MongoDBAdapter(clientPromise),
     // Optional database to persist users
     database: process.env.MONGODB_URI,
     secret: process.env.JWT_SECRET,
@@ -60,10 +63,10 @@ export default NextAuth({
             }
             return token
         },
-        async session({ session, token, user }) {
-            // Send properties to the client, like an access_token from a provider.
-            session.accessToken = token.accessToken
-            return session
-        }
+        // async session({ session, token, user }) {
+        //     // Send properties to the client, like an access_token from a provider.
+        //     session.accessToken = token.accessToken
+        //     return session
+        // }
     }
 })
