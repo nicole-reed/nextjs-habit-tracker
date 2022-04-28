@@ -14,6 +14,7 @@ export default NextAuth({
     adapter: MongoDBAdapter(clientPromise),
     // Optional database to persist users
     database: process.env.MONGODB_URI,
+
     secret: process.env.JWT_SECRET,
 
     session: {
@@ -56,17 +57,31 @@ export default NextAuth({
     },
 
     callbacks: {
-        async jwt({ token, account }) {
-            // Persist the OAuth access_token to the token right after signin
-            if (account) {
-                token.accessToken = account.access_token
-            }
+        async jwt({ token, user, account, profile, isNewUser }) {
+            user && (token.user = user)
             return token
         },
-        // async session({ session, token, user }) {
+        async session({ session, token, user }) {
+            session = {
+                ...session,
+                user: {
+                    id: user.id,
+                    ...session.user
+                }
+            }
+            return session
+        }
+        // async jwt({ token, account }) {
+        //     // Persist the OAuth access_token to the token right after signin
+        //     if (account) {
+        //         token.accessToken = account.access_token
+        //     }
+        //     return token
+        // },
+        // async session({ session, user }) {
         //     // Send properties to the client, like an access_token from a provider.
-        //     session.accessToken = token.accessToken
-        //     return session
+        //     // session.accessToken = token.accessToken
+        //     return { ...session, user: { ...session.user, id: user.sub } }
         // }
     }
 })

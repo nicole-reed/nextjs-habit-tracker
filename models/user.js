@@ -1,14 +1,13 @@
-import { Schema, model, models } from 'mongoose'
+import mongoose from "mongoose";
 
+const { Schema } = mongoose;
+const userSchema = new Schema({
+    name: String,
+    email: String,
+    emailVerified: Date,
+    image: String,
+});
+// userSchema.add({ habits: String });
+// userSchema.add({ habits: { type: Map, of: String } });
 
-const UserSchema = new Schema({
-    name: { type: String },
-    email: { type: String },
-    image: { type: String },
-    createdAt: { type: Date },
-    updatedAt: { type: Date },
-    likedTopics: { type: Map, of: String }
-})
-
-
-export const User = models.User || model('User', UserSchema)
+export default mongoose.models.User || mongoose.model("User", userSchema);

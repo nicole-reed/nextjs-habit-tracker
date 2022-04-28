@@ -16,15 +16,18 @@ export default function Nav() {
                     : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Sign In</a></Link></li>
                 } */}
 
-                {session && <li className='navItem'>{session.user.name}</li>}
-
-
-                {/* {isMobile &&  */}
+                {session && <li className='navItem'>{session.user.name}: {session.user.id}</li>}
                 <li className='navItem'><Link href="/homepage"><a className={router.pathname == "/homepage" ? "active" : ""}>Home</a></Link></li>
-                {/* } */}
                 <li className='navItem'><Link href="/calendar"><a className={router.pathname == "/calendar" ? "active" : ""}>Calendar</a></Link></li>
                 <li className='navItem'><Link href="/settings"><a className={router.pathname == "/settings" ? "active" : ""}>Settings</a></Link></li>
-                {session ? <button onClick={() => signOut()}>Sign out</button> : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Sign In</a></Link></li>}
+                {session ? <button onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>Sign out</button> : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Sign In</a></Link></li>}
+
+                {/* {isMobile &&
+                    <li className='navItem'><Link href="/homepage"><a className={router.pathname == "/homepage" ? "active" : ""}>Home</a></Link></li>
+                }
+                <li className='navItem'><Link href="/calendar"><a className={router.pathname == "/calendar" ? "active" : ""}>Calendar</a></Link></li>
+                <li className='navItem'><Link href="/settings"><a className={router.pathname == "/settings" ? "active" : ""}>Settings</a></Link></li>
+                {session ? <button onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>Sign out</button> : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Sign In</a></Link></li>} */}
             </ul>
         </nav>
     )

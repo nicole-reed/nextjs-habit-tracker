@@ -5,9 +5,9 @@ import '../styles/globals.css'
 
 // Use the <Provider> to improve performance and allow components that call
 // `useSession()` anywhere in your application to access the `session` object.
-export default function App({ Component, pageProps: { session, ...pageProps } }) {
+export default function App({ Component, pageProps: { session, ...pageProps }, }) {
   return (
-    <SessionProvider session={session}
+    <SessionProvider session={pageProps.session}
       // Provider options are not required but can be useful in situations where
       // you have a short session maxAge time. Shown here with default values.
       options={{
@@ -24,8 +24,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         // Note: If a session has expired when keep alive is triggered, all open
         // windows / tabs will be updated to reflect the user is signed out.
         keepAlive: 0
-      }}
-      session={pageProps.session} >
+      }} >
       {/* <ToastProvider autoDismiss={true} autoDismissTimeout='2000' placement='bottom-center'> */}
 
       <Component {...pageProps} />
