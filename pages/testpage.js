@@ -23,12 +23,22 @@ export default function Component() {
     const addHabit = async event => {
         try {
             // event.preventDefault()
-            const reqBody = { habit: event.target.habit.value, id: session.user.id }
+            const reqBody = { habit: event.target.habit.value, userid: session.user.id }
 
-            const res = await axios.post(`/api/hello`, reqBody)
+            const res = await axios.post(`/api/habits`, reqBody)
 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const deleteHabit = async (habitid) => {
+        try {
+            await axios.delete(`/api/habits/${habitid}`)
+
+            window.location.href = '/'
+        } catch (error) {
+            console.log(error.message)
         }
     }
 
@@ -46,7 +56,10 @@ export default function Component() {
                 {/* <h1>{habits[0]['name']}</h1> */}
 
                 {usersHabits.map((habit) => (
-                    <p key={habit._id}>{habit.name}</p>
+                    <>
+                        <p key={habit._id}>{habit.name}</p>
+                        <button onClick={() => deleteHabit(habit._id)}>Delete</button>
+                    </>
                 ))}
 
             </>

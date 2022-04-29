@@ -10,9 +10,10 @@ import read from '../public/habit-images/read.jpeg'
 import skincare from '../public/habit-images/skincare.jpeg'
 import meditate from '../public/habit-images/meditate.jpeg'
 import water from '../public/habit-images/water.jpeg'
+import { useSession } from 'next-auth/react'
 
 export default function Welcome() {
-  // const { data: session } = useSession()
+  const { data: session } = useSession()
   return (
     <div>
       <Head>
@@ -29,7 +30,7 @@ export default function Welcome() {
                 <div>
                   <h1 className="lighter">Welcome to HabitTracker</h1>
                   <h4 className="lighter">A tool for tracking your daily habits so you can improve your physical and mental well-being.</h4>
-                  <a href="/" className="btn">Get Started</a>
+                  {session ? <a href="/settings" className="btn">Get Started</a> : <a href="/api/auth/signin" className="btn">Get Started</a>}
                 </div>
                 <Image src={workout} />
               </div>

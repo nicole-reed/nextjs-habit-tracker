@@ -1,21 +1,20 @@
-// Gets all habits in db
-import dbConnect from "../../../lib/dbConnect";
-import Habit from '../../../models/habit';
-import User from '../../../models/user'
+// Gets habit by id
+import dbConnect from '../../../../lib/dbConnect';
+import Habit from '../../../../models/habit';
 
 export default async function handler(req, res) {
-    const { habit, userid } = req.body;
+    const { habitid } = req.query;
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
             try {
-                const foundHabits = await Habit.find({}).exec();
+                const foundHabit = await Habit.findOne({ _id: habitid }).exec();
                 // Check if any habits found
-                if (foundHabits) {
+                if (foundHabit) {
                     return res.status(200).json({
                         success: true,
-                        habits: foundHabits
+                        habit: foundHabit
                     });
                 } else {
                     return res.status(400).json({ success: false, error: "No habits found" });
@@ -24,16 +23,14 @@ export default async function handler(req, res) {
                 console.log(error);
                 return res.status(400).send(error);
             }
-        case "POST":
+        case "DELETE":
             try {
-                const user = await User.findOne({ _id: userid })
-                if (user) {
-                    const newHabit = await new Habit({ userid: userid, name: habit })
 
-                    await newHabit.save()
-                    console.log(`added ${newHabit.name}`)
-                }
-                return res.status(400).send('user not found')
+                await Habit.deleteOne({ _id: habitid })
+
+                return res.status(200).json({
+                    success: true
+                });
             } catch (error) {
                 console.log(error);
                 return res.status(400).send(error);
