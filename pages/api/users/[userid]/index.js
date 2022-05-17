@@ -38,20 +38,6 @@ export default async function handler(req, res) {
         //     console.log(error);
         //     return res.status(400).send(error);
         //   }
-        // case "POST":
-        //     try {
-        //         const user = await User.findById({ _id: id })
-        //         if (user) {
-        //             const newHabit = await new Habit({ userid: id, name: habit })
-
-        //             await newHabit.save()
-        //             console.log('added Habit')
-        //         }
-        //         return res.status(400).send('user not found')
-        //     } catch (error) {
-        //         console.log(error);
-        //         return res.status(400).send(error);
-        //     }
 
         default:
             return res.status(400).send("No such API route");

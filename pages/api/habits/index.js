@@ -32,8 +32,9 @@ export default async function handler(req, res) {
 
                     await newHabit.save()
                     console.log(`added ${newHabit.name}`)
+                } else {
+                    return res.status(400).send('user not found')
                 }
-                return res.status(400).send('user not found')
             } catch (error) {
                 console.log(error);
                 return res.status(400).send(error);

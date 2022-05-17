@@ -11,7 +11,7 @@ export default function Layout({ children }) {
             <main>
                 {children}
             </main>
-            <footer className="section-footer">
+            {/* <footer className="section-footer">
                 <div className="cont">
                     <div>
                         <h2 className="lighter">Connect with us on social media.</h2>
@@ -33,7 +33,7 @@ export default function Layout({ children }) {
                     </div>
 
                 </div>
-            </footer>
+            </footer> */}
         </div>
     )
 }

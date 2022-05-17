@@ -3,10 +3,14 @@ import Layout from '../components/layout'
 import { useSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import habit from '../models/habit'
 
-export default function Homepage() {
+export default function Checklist() {
     const { data: session } = useSession()
     const [habits, setHabits] = useState({})
+    const [checkedHabits, setCheckedHabits] = useState({})
+    const today = new Date().toISOString().slice(0, 10)
+    console.log('today', today)
 
     const getHabits = async () => {
         try {
@@ -21,6 +25,17 @@ export default function Homepage() {
         getHabits()
     }, [session])
 
+    // const addLog = async event => {
+    //     try {
+    //         // event.preventDefault()
+    //         const reqBody = { `${habit._id}` : `${habit.name}`}
+
+    //         const res = await axios.post(`/api/users/${session.user.id}/logs/${today}`, reqBody)
+
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
     let usersHabits = []
     if (habits.length > 0) {
@@ -41,27 +56,14 @@ export default function Homepage() {
 
 
                         <main>
-                            <h1>
-                                Here is where today's habits will be displayed...
+                            <h1>Today's Habits:</h1>
 
-                </h1>
-                Signed in as {session.user.email} <br />
-                ID: {session.user.id}
-
-                            {usersHabits ?
-                                <ul>
-                                    {usersHabits && usersHabits.map((habit) => (
-                                        <div>
-                                            <li key={habit._id}>
-                                                <input id={habit._id} type="checkbox" defaultChecked={true} />
-                                                <label className="habit-name" htmlFor={habit._id}>
-                                                    {habit.name}
-                                                </label>
-                                            </li>
-                                        </div>
-                                    ))}
-                                </ul>
-                                : ''}
+                            {usersHabits ? usersHabits.map((habit) => (
+                                <>
+                                    <p key={habit._id}>{habit.name}</p>
+                                    <input id={habit._id} habitname={habit.name} type='checkbox'></input>
+                                </>
+                            )) : ''}
                         </main>
                     </Layout>
                 </div>
@@ -93,19 +95,5 @@ export default function Homepage() {
 
         </>
     )
-
 }
 
-// export async function getServerSideProps(context) {
-//     try {
-//         await clientPromise
-//         return {
-//             props: { isConnected: true },
-//         }
-//     } catch (e) {
-//         console.error(e)
-//         return {
-//             props: { isConnected: false },
-//         }
-//     }
-// }

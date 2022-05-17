@@ -16,7 +16,7 @@ export default function Nav() {
                     : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Sign In</a></Link></li>
                 } */}
 
-                {session && <li className='navItem'>{session.user.name}: {session.user.id}</li>}
+                {session && <li id='navName' className='navItem'>{session.user.name}</li>}
 
                 {session ? <li className='navItem'><Link href="/homepage"><a className={router.pathname == "/homepage" ? "active" : ""}>Home</a></Link></li>
                     : <li className='navItem'><Link href={`/api/auth/signin`}><a className={router.pathname == "/signin" ? "active" : ""}>Home</a></Link></li>}

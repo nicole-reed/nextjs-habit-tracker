@@ -1,6 +1,7 @@
 import { SessionProvider } from 'next-auth/react'
 // import { ToastProvider } from 'react-toast-notifications'
 import '../styles/globals.css'
+// import 'bootstrap/dist/css/bootstrap.css'
 
 
 // Use the <Provider> to improve performance and allow components that call
