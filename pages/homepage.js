@@ -7,6 +7,12 @@ import axios from 'axios'
 export default function Homepage() {
     const { data: session } = useSession()
     const [habits, setHabits] = useState({})
+    const today = new Date().toISOString().slice(0, 10)
+    const [log, setLog] = useState({})
+    const habitIDs = Object.keys(log)
+    const habitNames = Object.values(log)
+    // console.log('habit ids', habitIDs)
+    // console.log('habit names', habitNames)
 
     const getHabits = async () => {
         try {
@@ -20,6 +26,43 @@ export default function Homepage() {
     useEffect(() => {
         getHabits()
     }, [session])
+
+    const getLog = async () => {
+        try {
+            const res = await axios.get(`/api/users/${session.user.id}/logs/${today}`)
+            const log = res.data.log.habitsCompleted
+
+            setLog(log)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getLog()
+    }, [session], [])
+
+    // TODO
+    const updateLog = async () => {
+        try {
+
+            await axios.patch(`/api/users/${session.user.id}/logs/${today}`)
+            getLog()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // TODO
+    const createLog = async () => {
+        try {
+
+            await axios.post(`/api/users/${session.user.id}/logs/${today}`)
+            getLog()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     let usersHabits = []
@@ -53,7 +96,7 @@ export default function Homepage() {
                                     {usersHabits && usersHabits.map((habit) => (
                                         <div>
                                             <li key={habit._id}>
-                                                <input id={habit._id} type="checkbox" defaultChecked={true} />
+                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={updateLog} />
                                                 <label className="habit-name" htmlFor={habit._id}>
                                                     {habit.name}
                                                 </label>
