@@ -10,7 +10,7 @@ export default function Homepage() {
     const today = new Date().toISOString().slice(0, 10)
     const [log, setLog] = useState({})
     const habitIDs = Object.keys(log)
-    const habitNames = Object.values(log)
+    // const habitNames = Object.values(log)
     // console.log('habit ids', habitIDs)
     // console.log('habit names', habitNames)
 
@@ -27,6 +27,7 @@ export default function Homepage() {
         getHabits()
     }, [session])
 
+
     const getLog = async () => {
         try {
             const res = await axios.get(`/api/users/${session.user.id}/logs/${today}`)
@@ -41,11 +42,12 @@ export default function Homepage() {
         getLog()
     }, [session], [])
 
-    // TODO
-    const updateLog = async () => {
-        try {
 
-            await axios.patch(`/api/users/${session.user.id}/logs/${today}`)
+    // TODO
+    const updateLog = async event => {
+        try {
+            const reqBody = { habitID: event.target.id, habitName: event.target.name }
+            await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
             getLog()
 
         } catch (error) {
@@ -53,10 +55,11 @@ export default function Homepage() {
         }
     }
     // TODO
-    const createLog = async () => {
+    const createLog = async event => {
         try {
+            const reqBody = { habitID: event.target.id, habitName: event.target.name }
 
-            await axios.post(`/api/users/${session.user.id}/logs/${today}`)
+            await axios.post(`/api/users/${session.user.id}/logs/${today}`, reqBody)
             getLog()
 
         } catch (error) {
@@ -96,7 +99,7 @@ export default function Homepage() {
                                     {usersHabits && usersHabits.map((habit) => (
                                         <div>
                                             <li key={habit._id}>
-                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={updateLog} />
+                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log ? updateLog : createLog} />
                                                 <label className="habit-name" htmlFor={habit._id}>
                                                     {habit.name}
                                                 </label>

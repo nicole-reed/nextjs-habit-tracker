@@ -17,7 +17,9 @@ export default async function handler(req, res) {
                     return res.status(400).send('log already exists')
                 }
                 if (user && !foundlog) {
-                    const newLog = await new Log({ userid: userid, date: date, habitsCompleted: habit })
+                    const habitId = habit.habitID
+                    const habitName = habit.habitName
+                    const newLog = await new Log({ userid: userid, date: date, habitsCompleted: { [`${habitId}`]: habitName } })
 
                     await newLog.save()
                     return res.status(200).send(`created log for ${newLog.date}`)
@@ -48,8 +50,8 @@ export default async function handler(req, res) {
         case "PATCH":
             try {
                 const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
-                const habitId = Object.keys(habit)[0]
-                const habitName = Object.values(habit)[0]
+                const habitId = habit.habitID
+                const habitName = habit.habitName
 
                 if (foundlog) {
                     const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
