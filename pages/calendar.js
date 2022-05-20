@@ -1,8 +1,26 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import Layout from '../components/layout'
+import { useSession } from "next-auth/react"
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 export default function Calendar() {
+    const { data: session } = useSession()
+    const [logs, setLogs] = useState([])
+
+    const getLogs = async () => {
+        try {
+            const res = await axios.get(`/api/users/${session.user.id}/logs`)
+
+            setLogs(res.data.logs)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getLogs()
+    }, [session])
+
     return (
         <div>
             <Head>
@@ -16,6 +34,16 @@ export default function Calendar() {
                     <h1>
                         Here is where the calendar will go...
                 </h1>
+                    {/* {log && <>
+                        <ul>
+                            {log.map(day => (
+                                <li>
+                                    <h3>{day.date}</h3>
+                                    <h3>{day.habitsCompleted}</h3>
+                                </li>
+                            ))}
+                        </ul>
+                    </>} */}
                 </main>
             </Layout>
         </div>

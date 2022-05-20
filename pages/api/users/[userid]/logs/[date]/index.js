@@ -38,8 +38,7 @@ export default async function handler(req, res) {
                     return res.status(200).json({
                         success: true,
                         log: foundlog
-                    });
-
+                    })
                 } else {
                     return res.status(400).send('log not found')
                 }
@@ -54,12 +53,22 @@ export default async function handler(req, res) {
                 const habitName = habit.habitName
 
                 if (foundlog) {
-                    const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
-                    return res.status(200).json({
-                        success: true,
-                        log: updatedLog
-                    });
-
+                    if (habit.complete == true) {
+                        const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
+                        console.log('updated Log(complete:true)')
+                        return res.status(200).json({
+                            success: true,
+                            log: updatedLog
+                        })
+                    } else {
+                        // const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
+                        const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { $unset: { [`habitsCompleted.${habitId}`]: ' ' } })
+                        console.log('updated Log(complete:false)')
+                        return res.status(200).json({
+                            success: true,
+                            log: updatedLog
+                        })
+                    }
                 } else {
                     return res.status(400).send('not found')
                 }

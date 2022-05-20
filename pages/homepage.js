@@ -7,12 +7,10 @@ import axios from 'axios'
 export default function Homepage() {
     const { data: session } = useSession()
     const [habits, setHabits] = useState({})
+    console.log('habits', habits)
     const today = new Date().toISOString().slice(0, 10)
     const [log, setLog] = useState({})
     const habitIDs = Object.keys(log)
-    // const habitNames = Object.values(log)
-    // console.log('habit ids', habitIDs)
-    // console.log('habit names', habitNames)
 
     const getHabits = async () => {
         try {
@@ -40,14 +38,20 @@ export default function Homepage() {
     }
     useEffect(() => {
         getLog()
-    }, [session], [])
+    }, [])
 
 
     // TODO
     const updateLog = async event => {
         try {
-            const reqBody = { habitID: event.target.id, habitName: event.target.name }
-            await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
+            if (event.target.checked) {
+                const reqBody = { habitID: event.target.id, habitName: event.target.name, complete: true }
+                await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
+            } else {
+                const reqBody = { habitID: event.target.id, habitName: event.target.name, complete: false }
+                await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
+            }
+
             getLog()
 
         } catch (error) {
@@ -66,7 +70,6 @@ export default function Homepage() {
             console.log(error)
         }
     }
-
 
     let usersHabits = []
     if (habits.length > 0) {
