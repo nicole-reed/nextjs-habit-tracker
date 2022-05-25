@@ -1,6 +1,6 @@
 // Gets all of a user's logs
 import dbConnect from '../../../../../lib/dbConnect';
-import Log from '../../../../../models/Log';
+import Log from '../../../../../models/log';
 
 export default async function handler(req, res) {
     const { userid } = req.query

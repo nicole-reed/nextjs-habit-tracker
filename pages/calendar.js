@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
+import FullCalendar from '../components/fullCalendar'
 import { useSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -31,18 +32,21 @@ export default function Calendar() {
             <Layout>
 
                 <main>
-                    <h1>
-                        Here is where the calendar will go...
-                </h1>
-                    {/* {log && <>
-                        <ul>
-                            {log.map(day => (
-                                <li>
-                                    <h3>{day.date}</h3>
-                                    <h3>{day.habitsCompleted}</h3>
-                                </li>
+                    <FullCalendar />
+                    {/* {logs && <>
+                        <div className='logs'>
+                            {logs.map(day => (
+                                <div>
+                                    <p>date: {day.date.slice(0, 10)}</p>
+
+                                    <ul>
+                                        {Object.values(day.habitsCompleted).map(habit => <li>{habit}</li>)}
+                                    </ul>
+
+
+                                </div>
                             ))}
-                        </ul>
+                        </div>
                     </>} */}
                 </main>
             </Layout>

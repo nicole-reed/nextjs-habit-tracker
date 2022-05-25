@@ -1,6 +1,8 @@
 import { SessionProvider } from 'next-auth/react'
 // import { ToastProvider } from 'react-toast-notifications'
 import '../styles/globals.css'
+import '@fullcalendar/common/main.css'
+import '@fullcalendar/daygrid/main.css'
 // import 'bootstrap/dist/css/bootstrap.css'
 
 
