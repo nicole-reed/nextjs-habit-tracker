@@ -12,10 +12,10 @@ export default function Homepage() {
     const [habitsCompleted, setHabitsCompleted] = useState([])
     const habitIDs = Object.keys(habitsCompleted)
 
-    console.log('log', log)
-    console.log('log._id', log._id)
-    console.log('habits', habits)
-    console.log('habitIDs', habitIDs)
+    // console.log('log', log)
+    // console.log('log._id', log._id)
+    // console.log('habits', habits)
+    // console.log('habitIDs', habitIDs)
 
 
     const getHabits = async () => {
@@ -99,12 +99,7 @@ export default function Homepage() {
 
 
                         <main>
-                            <h1>
-                                Here is where today's habits will be displayed...
-
-                </h1>
-                Signed in as {session.user.email} <br />
-                ID: {session.user.id}
+                            <h1>Today's Habits</h1>
 
                             {usersHabits && log ?
                                 <ul>
