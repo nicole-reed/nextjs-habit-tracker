@@ -11,7 +11,9 @@ export default function Homepage() {
     const { date } = router.query
     const [habits, setHabits] = useState({})
     const [log, setLog] = useState({})
-    const habitIDs = Object.keys(log)
+    const [habitsCompleted, setHabitsCompleted] = useState([])
+    const habitIDs = Object.keys(habitsCompleted)
+
 
     const getHabits = async () => {
         try {
@@ -30,9 +32,11 @@ export default function Homepage() {
     const getLog = async () => {
         try {
             const res = await axios.get(`/api/users/${session.user.id}/logs/${date}`)
-            const log = res.data.log.habitsCompleted
+            const log = res.data.log
+            const habits = res.data.log.habitsCompleted
 
             setLog(log)
+            setHabitsCompleted(habits)
         } catch (error) {
             console.log(error)
         }
@@ -99,7 +103,7 @@ export default function Homepage() {
                                     {usersHabits && usersHabits.map((habit) => (
                                         <div>
                                             <li key={habit._id}>
-                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log || habitIDs.length > 0 ? updateLog : createLog} />
+                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log._id || habitIDs.length > 0 ? updateLog : createLog} />
                                                 <label className="habit-name" htmlFor={habit._id}>
                                                     {habit.name}
                                                 </label>
