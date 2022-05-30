@@ -2,6 +2,7 @@
 import dbConnect from '../../../../../../lib/dbConnect';
 import Log from '../../../../../../models/log';
 import User from '../../../../../../models/user';
+import { Record, String, Optional, Boolean } from 'runtypes';
 
 export default async function handler(req, res) {
     const { userid, date } = req.query

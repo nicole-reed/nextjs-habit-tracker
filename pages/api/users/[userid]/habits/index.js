@@ -1,6 +1,7 @@
 // Gets all of a user's habits
 import dbConnect from '../../../../../lib/dbConnect';
 import Habit from '../../../../../models/habit';
+import { Record, String, Optional, Boolean } from 'runtypes';
 
 export default async function handler(req, res) {
     const { userid } = req.query

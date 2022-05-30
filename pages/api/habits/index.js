@@ -1,10 +1,19 @@
 // Gets all habits in db
 import dbConnect from "../../../lib/dbConnect";
 import Habit from '../../../models/habit';
-import User from '../../../models/user'
+import User from '../../../models/user';
+import { Record, String, Optional, Boolean } from 'runtypes';
+
+
+const createHabitRunType = Record({
+    body: Record({
+        habit: String,
+        userid: String
+    })
+})
+
 
 export default async function handler(req, res) {
-    const { habit, userid } = req.body;
     await dbConnect();
     const { method } = req;
     switch (method) {
@@ -26,7 +35,10 @@ export default async function handler(req, res) {
             }
         case "POST":
             try {
+                const validatedRequest = createHabitRunType.check(req)
+                const { habit, userid } = validatedRequest.body
                 const user = await User.findOne({ _id: userid })
+
                 if (user) {
                     const newHabit = await new Habit({ userid: userid, name: habit })
 

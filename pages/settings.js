@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
+import DeleteModal from '../components/deleteModal'
 import { useSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
@@ -7,6 +8,11 @@ import axios from 'axios'
 export default function Settings() {
     const { data: session } = useSession()
     const [habits, setHabits] = useState({})
+    // For delete modal
+    const [habitid, setHabitId] = useState(null);
+    const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+    const [deleteMessage, setDeleteMessage] = useState(null);
+    const [message, setMessage] = useState(null)
 
     const getHabits = async () => {
         try {
@@ -34,21 +40,50 @@ export default function Settings() {
                 console.log(error)
             }
         }
-        const deleteHabit = async (habitid) => {
-            try {
-                await axios.delete(`/api/habits/${habitid}`)
+        // const deleteHabit = async (habitid) => {
+        //     try {
+        //         await axios.delete(`/api/habits/${habitid}`)
 
-                getHabits()
-            } catch (error) {
-                console.log(error.message)
-            }
-        }
+        //         getHabits()
+        //     } catch (error) {
+        //         console.log(error.message)
+        //     }
+        // }
 
         let usersHabits = []
         if (habits.length > 0) {
 
             usersHabits = habits.filter(habit => habit.userid === session.user.id)
         }
+
+
+        // Handle the displaying of the modal based on id
+        const showDeleteModal = async (habitid) => {
+            setHabitId(habitid);
+
+            setDeleteMessage('Are you sure you want to delete the habit and its records?');
+
+
+            setDisplayConfirmationModal(true);
+        };
+
+        // Hide the modal
+        const hideConfirmationModal = () => {
+            setDisplayConfirmationModal(false);
+        };
+
+        // Handle the actual deletion of the item
+        const submitDelete = async (habitid) => {
+            try {
+                await axios.delete(`/api/habits/${habitid}`)
+                setMessage('Habit was deleted succcessfully');
+                setDisplayConfirmationModal(false);
+
+                getHabits()
+            } catch (error) {
+                console.log(error.message)
+            }
+        };
         return (
             <div>
                 <Head>
@@ -62,14 +97,14 @@ export default function Settings() {
                         <h1>
                             My habits
                     </h1>
-                        <div className='habit-list'>
+                        <ul className='habit-list'>
                             {usersHabits.map((habit) => (
-                                <>
+                                <li>
                                     <p id={habit._id} key={habit._id}>{habit.name}</p>
-                                    <button id={habit._id} className='btn' onClick={() => deleteHabit(habit._id)}>Delete</button>
-                                </>
+                                    <button id={habit._id} className='btn' onClick={() => showDeleteModal(habit._id)}>Delete</button>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
 
 
                         <form onSubmit={addHabit}>
@@ -80,6 +115,8 @@ export default function Settings() {
 
 
                     </main>
+                    <DeleteModal showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} habitid={habitid} message={deleteMessage} />
+
 
                 </Layout>
             </div>
@@ -102,6 +139,7 @@ export default function Settings() {
 
                     </main>
                 </Layout>
+
             </div>
 
 

@@ -2,6 +2,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import User from '../../../models/user';
 import Habit from '../../../models/habit';
+import { Record, String, Optional, Boolean } from 'runtypes';
 
 export default async function handler(req, res) {
     const { habit, id } = req.body;

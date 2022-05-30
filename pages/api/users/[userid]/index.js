@@ -1,6 +1,7 @@
 // Get single user by id
 import dbConnect from "../../../../lib/dbConnect";
 import User from '../../../../models/user';
+import { Record, String, Optional, Boolean } from 'runtypes';
 
 export default async function handler(req, res) {
     const { userid } = req.query;
