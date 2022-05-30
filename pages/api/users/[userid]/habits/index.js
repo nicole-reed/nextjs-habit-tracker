@@ -3,14 +3,20 @@ import dbConnect from '../../../../../lib/dbConnect';
 import Habit from '../../../../../models/habit';
 import { Record, String, Optional, Boolean } from 'runtypes';
 
+const getHabitsByUserIdRunType = Record({
+    query: Record({
+        userid: String
+    })
+})
+
 export default async function handler(req, res) {
-    const { userid } = req.query
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
             try {
-
+                const validatedRequest = getHabitsByUserIdRunType.check(req)
+                const { userid } = validatedRequest.query
                 const foundHabitsByUserId = await Habit.find({ userid: userid }).exec();
                 // Check if any habits found
                 if (foundHabitsByUserId) {

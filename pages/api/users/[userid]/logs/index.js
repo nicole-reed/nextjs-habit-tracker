@@ -3,13 +3,21 @@ import dbConnect from '../../../../../lib/dbConnect';
 import Log from '../../../../../models/log';
 import { Record, String, Optional, Boolean } from 'runtypes';
 
+const getLogsByUserIdRunType = Record({
+    query: Record({
+        userid: String
+    })
+})
+
 export default async function handler(req, res) {
-    const { userid } = req.query
+
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
             try {
+                const validatedRequest = getLogsByUserIdRunType.check(req)
+                const { userid } = validatedRequest.query
                 const foundLogsByUserId = await Log.find({ userid: userid }).exec();
                 // Check if any logs found
                 if (foundLogsByUserId) {
