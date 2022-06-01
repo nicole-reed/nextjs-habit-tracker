@@ -2,6 +2,8 @@
 import dbConnect from "../../../../lib/dbConnect";
 import User from '../../../../models/user';
 import { Record, String } from 'runtypes';
+import { NotFoundError } from "../../../../errors/notFound.error";
+import handleError from "../../../../utils/handleError";
 
 const getUserByIdRunType = Record({
     query: Record({
@@ -26,11 +28,10 @@ export default async function handler(req, res) {
                         User: foundUser
                     });
                 } else {
-                    return res.status(400).json({ success: false, error: "No users found" });
+                    throw new NotFoundError('No user found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         case "DELETE":
             try {
@@ -44,12 +45,11 @@ export default async function handler(req, res) {
 
                     console.log('deleted user')
                 } else {
-                    return res.status(400).send('user not found')
+                    throw new NotFoundError('No user found')
                 }
 
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
 
         default:

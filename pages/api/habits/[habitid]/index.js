@@ -2,7 +2,8 @@
 import dbConnect from '../../../../lib/dbConnect';
 import Habit from '../../../../models/habit';
 import { Record, String } from 'runtypes';
-
+import { NotFoundError } from '../../../../errors/notFound.error';
+import handleError from '../../../../utils/handleError';
 
 const getHabitByIdRunType = Record({
     query: Record({
@@ -26,11 +27,10 @@ export default async function handler(req, res) {
                         habit: foundHabit
                     });
                 } else {
-                    return res.status(400).json({ success: false, error: "No habits found" });
+                    throw new NotFoundError('No habits found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         case "DELETE":
             try {
@@ -42,17 +42,10 @@ export default async function handler(req, res) {
                     success: true
                 });
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
 
         default:
             return res.status(400).send("No such API route");
     }
 }
-
-
-
-// export default (req, res) => {
-//   res.status(200).json({ name: 'John Doe' })
-// }

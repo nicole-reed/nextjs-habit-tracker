@@ -1,6 +1,7 @@
 import { NotFoundError } from '../errors/notFound.error'
 import { ForbiddenError } from '../errors/forbidden.error'
 import { UnauthorizedError } from '../errors/unauthorized.error'
+import { BadRequestError } from '../errors/badRequest.error'
 import { ValidationError } from 'runtypes'
 
 export default function handleError(error, res) {
@@ -13,6 +14,9 @@ export default function handleError(error, res) {
 
     } else if (error instanceof UnauthorizedError) {
         res.status(401).send({ message: error.message })
+
+    } else if (error instanceof BadRequestError) {
+        res.status(400).send({ message: error.message })
 
     } else if (error instanceof ValidationError) {
         res.status(400).send({ message: error.message, details: error.details })

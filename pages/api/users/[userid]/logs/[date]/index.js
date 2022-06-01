@@ -1,8 +1,11 @@
-// PUT/GET/PATCH/DELETE log by id
+// PUT/GET/PATCH log by id
 import dbConnect from '../../../../../../lib/dbConnect';
 import Log from '../../../../../../models/log';
 import User from '../../../../../../models/user';
-import { Record, String, Optional, Boolean } from 'runtypes';
+import { Record, String } from 'runtypes';
+import { NotFoundError } from '../../../../../../errors/notFound.error';
+import { BadRequestError } from '../../../../../../errors/badRequest.error';
+import handleError from '../../../../../../utils/handleError'
 
 const getLogByDateRunType = Record({
     query: Record({
@@ -49,7 +52,7 @@ export default async function handler(req, res) {
                 const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
 
                 if (foundlog) {
-                    return res.status(400).send('log already exists')
+                    throw new BadRequestError('Log already exists')
                 }
 
                 if (user && !foundlog) {
@@ -60,11 +63,10 @@ export default async function handler(req, res) {
                     await newLog.save()
                     return res.status(200).send(`created log for ${newLog.date}`)
                 } else {
-                    return res.status(400).send('user not found')
+                    throw new NotFoundError('No user found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         case "GET":
             try {
@@ -79,11 +81,10 @@ export default async function handler(req, res) {
                         log: foundlog
                     })
                 } else {
-                    return res.status(400).send('log not found')
+                    throw new NotFoundError('No log found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         case "PATCH":
             try {
@@ -93,11 +94,9 @@ export default async function handler(req, res) {
 
                 const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
 
-
                 if (foundlog) {
                     if (habit.complete == true) {
                         const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitID}`]: habitName })
-                        console.log('updated Log(complete:true)')
                         return res.status(200).json({
                             success: true,
                             log: updatedLog
@@ -105,18 +104,16 @@ export default async function handler(req, res) {
                     } else {
                         // const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
                         const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { $unset: { [`habitsCompleted.${habitID}`]: ' ' } })
-                        console.log('updated Log(complete:false)')
                         return res.status(200).json({
                             success: true,
                             log: updatedLog
                         })
                     }
                 } else {
-                    return res.status(400).send('not found')
+                    throw new NotFoundError('No log found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         default:
             return res.status(400).send("No such API route");

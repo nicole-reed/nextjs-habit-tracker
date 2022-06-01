@@ -1,7 +1,9 @@
 // Gets all of a user's habits
 import dbConnect from '../../../../../lib/dbConnect';
 import Habit from '../../../../../models/habit';
-import { Record, String, Optional, Boolean } from 'runtypes';
+import { Record, String } from 'runtypes';
+import { NotFoundError } from '../../../../../errors/notFound.error';
+import handleError from '../../../../../utils/handleError';
 
 const getHabitsByUserIdRunType = Record({
     query: Record({
@@ -18,18 +20,17 @@ export default async function handler(req, res) {
                 const validatedRequest = getHabitsByUserIdRunType.check(req)
                 const { userid } = validatedRequest.query
                 const foundHabitsByUserId = await Habit.find({ userid: userid }).exec();
-                // Check if any habits found
+
                 if (foundHabitsByUserId) {
                     return res.status(200).json({
                         success: true,
                         habits: foundHabitsByUserId
                     });
                 } else {
-                    return res.status(400).json({ success: false, error: "No habits found" });
+                    throw new NotFoundError('No habits found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
 
         default:

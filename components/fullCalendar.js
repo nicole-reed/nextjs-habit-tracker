@@ -8,6 +8,20 @@ import axios from 'axios'
 export default function FullCalendar(props) {
     const { data: session } = useSession()
     const [logs, setLogs] = useState([])
+    const [habitNames, setHabitNames] = useState([])
+
+    const getHabits = async () => {
+        try {
+            const res = await axios.get(`api/users/${session.user.id}/habits`)
+            const names = res.data.habits.map(habit => habit.name)
+            setHabitNames(names)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getHabits()
+    }, [session])
 
     const getLogs = async () => {
         try {
@@ -32,9 +46,11 @@ export default function FullCalendar(props) {
             }
         })
     })
-
+    // events is an array of arrays so to make one array we flatten
     const eventLog = events.flat()
-    // console.log('events', events.flat())
+    // filter out events that are no longer in the user's habits
+    const filteredEvents = eventLog.filter(event => habitNames.includes(event.title))
+
     return (
         <Calendar {...props}
             plugins={[dayGridPlugin]}
@@ -42,7 +58,7 @@ export default function FullCalendar(props) {
             contentHeight="auto"
             navLinks="true"
             timeZone="local"
-            events={eventLog}
+            events={filteredEvents}
             navLinkDayClick={(date) => {
                 // console.log('day', date.toISOString().slice(0, 10));
                 const day = date.getDate() < 10 ? `0` + date.getDate() : date.getDate()

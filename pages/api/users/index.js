@@ -1,12 +1,10 @@
 // Gets all users
 import dbConnect from "../../../lib/dbConnect";
 import User from '../../../models/user';
-import Habit from '../../../models/habit';
-import { Record, String, Optional, Boolean } from 'runtypes';
-
+import { NotFoundError } from "../../../errors/notFound.error";
+import handleError from "../../../utils/handleError";
 
 export default async function handler(req, res) {
-
     await dbConnect();
     const { method } = req;
     switch (method) {
@@ -20,11 +18,10 @@ export default async function handler(req, res) {
                         Users: foundUsers
                     });
                 } else {
-                    return res.status(400).json({ success: false, error: "No users found" });
+                    throw new NotFoundError('No users found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
 
         default:

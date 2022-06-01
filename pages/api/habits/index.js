@@ -1,9 +1,11 @@
-// Gets all habits in db
+// Gets all habits in db, creates a new habit
 import dbConnect from "../../../lib/dbConnect";
 import Habit from '../../../models/habit';
 import User from '../../../models/user';
-import { Record, String, Optional, Boolean } from 'runtypes';
-
+import { Record, String } from 'runtypes';
+import { NotFoundError } from '../../../errors/notFound.error';
+import { BadRequestError } from "../../../errors/badRequest.error";
+import handleError from '../../../utils/handleError';
 
 const createHabitRunType = Record({
     body: Record({
@@ -12,7 +14,6 @@ const createHabitRunType = Record({
     })
 })
 
-
 export default async function handler(req, res) {
     await dbConnect();
     const { method } = req;
@@ -20,45 +21,50 @@ export default async function handler(req, res) {
         case "GET":
             try {
                 const foundHabits = await Habit.find({}).exec();
-                // Check if any habits found
+
                 if (foundHabits) {
                     return res.status(200).json({
                         success: true,
                         habits: foundHabits
                     });
                 } else {
-                    return res.status(400).json({ success: false, error: "No habits found" });
+                    throw new NotFoundError('No habits found')
                 }
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
         case "POST":
             try {
                 const validatedRequest = createHabitRunType.check(req)
                 const { habit, userid } = validatedRequest.body
                 const user = await User.findOne({ _id: userid })
-
-                if (user) {
-                    const newHabit = await new Habit({ userid: userid, name: habit })
-
-                    await newHabit.save()
-                    console.log(`added ${newHabit.name}`)
-                } else {
-                    return res.status(400).send('user not found')
+                if (!user) {
+                    throw new NotFoundError('No user found')
                 }
+
+                const foundHabitsByUserId = await Habit.find({ userid: userid }).exec();
+                let foundHabitsArr = []
+                if (user && foundHabitsByUserId) {
+                    foundHabitsByUserId.map(habit => foundHabitsArr.push(habit.name.toLowerCase()))
+                }
+
+                if (user && foundHabitsArr.includes(habit.toLowerCase())) {
+                    throw new BadRequestError('Habit already exists')
+                }
+
+                if (!habit || habit == " ") {
+                    throw new BadRequestError('Habit must contain valid characters')
+                }
+
+                const newHabit = await new Habit({ userid: userid, name: habit })
+
+                await newHabit.save()
+                console.log(`added ${newHabit.name}`)
             } catch (error) {
-                console.log(error);
-                return res.status(400).send(error);
+                handleError(error, res)
             }
 
         default:
             return res.status(400).send("No such API route");
     }
 }
-
-
-
-// export default (req, res) => {
-//   res.status(200).json({ name: 'John Doe' })
-// }

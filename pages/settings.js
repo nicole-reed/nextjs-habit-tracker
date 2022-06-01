@@ -33,7 +33,7 @@ export default function Settings() {
                 // event.preventDefault()
                 const reqBody = { habit: event.target.habit.value, userid: session.user.id }
 
-                const res = await axios.post(`/api/habits`, reqBody)
+                await axios.post(`/api/habits`, reqBody)
 
                 getHabits()
             } catch (error) {
