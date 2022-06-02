@@ -33,21 +33,7 @@ export default function Calendar() {
 
                 <main>
                     <FullCalendar />
-                    {/* {logs && <>
-                        <div className='logs'>
-                            {logs.map(day => (
-                                <div>
-                                    <p>date: {day.date.slice(0, 10)}</p>
 
-                                    <ul>
-                                        {Object.values(day.habitsCompleted).map(habit => <li>{habit}</li>)}
-                                    </ul>
-
-
-                                </div>
-                            ))}
-                        </div>
-                    </>} */}
                 </main>
             </Layout>
         </div>

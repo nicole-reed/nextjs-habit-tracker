@@ -85,7 +85,7 @@ export default async function handler(req, res) {
                         return res.status(200).json({
                             success: true,
                             log: foundlog
-                        })
+                        });
                     } else {
                         throw new NotFoundError('No log found')
                     }

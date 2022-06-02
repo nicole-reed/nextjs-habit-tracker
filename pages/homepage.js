@@ -11,20 +11,17 @@ export default function Homepage() {
     const [log, setLog] = useState({})
     const [habitsCompleted, setHabitsCompleted] = useState([])
     const habitIDs = Object.keys(habitsCompleted)
-
-    // console.log('log', log)
-    // console.log('log._id', log._id)
-    // console.log('habits', habits)
-    // console.log('habitIDs', habitIDs)
-
+    const [isLoading, setLoading] = useState(true)
 
     const getHabits = async () => {
         try {
+            setLoading(true)
             const res = await axios.get(`/api/users/${session.user.id}/habits`)
 
             setHabits(res.data.habits)
+            setLoading(false)
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
     useEffect(() => {
@@ -41,15 +38,12 @@ export default function Homepage() {
             setLog(log)
             setHabitsCompleted(habits)
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
     useEffect(() => {
         getLog()
     }, [session])
-
-
-
 
     const updateLog = async event => {
         try {
@@ -64,7 +58,7 @@ export default function Homepage() {
             getLog()
 
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
@@ -76,7 +70,7 @@ export default function Homepage() {
             getLog()
 
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
@@ -99,22 +93,25 @@ export default function Homepage() {
 
 
                         <main>
-                            <h1>Today's Habits</h1>
+                            {isLoading ? '...' :
+                                <div>
+                                    <h1>Today's Habits</h1>
 
-                            {usersHabits && log ?
-                                <ul>
-                                    {usersHabits && usersHabits.map((habit) => (
+                                    {usersHabits && log ?
+                                        <ul>
+                                            {usersHabits && usersHabits.map((habit) => (
 
-                                        <li key={habit._id}>
-                                            <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log._id || habitIDs.length > 0 ? updateLog : createLog} />
-                                            <label className="habit-name" htmlFor={habit._id}>
-                                                {habit.name}
-                                            </label>
-                                        </li>
+                                                <li key={habit._id}>
+                                                    <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log._id || habitIDs.length > 0 ? updateLog : createLog} />
+                                                    <label className="habit-name" htmlFor={habit._id}>
+                                                        {habit.name}
+                                                    </label>
+                                                </li>
 
-                                    ))}
-                                </ul>
-                                : ''}
+                                            ))}
+                                        </ul>
+                                        : ''}
+                                </div>}
                         </main>
                     </Layout>
                 </div>

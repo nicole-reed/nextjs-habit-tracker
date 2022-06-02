@@ -9,6 +9,7 @@ export default function FullCalendar(props) {
     const { data: session } = useSession()
     const [logs, setLogs] = useState([])
     const [habitNames, setHabitNames] = useState([])
+    const [isLoading, setLoading] = useState(true)
 
     const getHabits = async () => {
         try {
@@ -25,9 +26,11 @@ export default function FullCalendar(props) {
 
     const getLogs = async () => {
         try {
+            setLoading(true)
             const res = await axios.get(`/api/users/${session.user.id}/logs`)
 
             setLogs(res.data.logs)
+            setLoading(false)
         } catch (error) {
             console.log(error)
         }
@@ -52,21 +55,26 @@ export default function FullCalendar(props) {
     const filteredEvents = eventLog.filter(event => habitNames.includes(event.title))
 
     return (
-        <Calendar {...props}
-            plugins={[dayGridPlugin]}
-            initialView="dayGridMonth"
-            contentHeight="auto"
-            navLinks="true"
-            timeZone="local"
-            events={filteredEvents}
-            navLinkDayClick={(date) => {
-                // console.log('day', date.toISOString().slice(0, 10));
-                const day = date.getDate() < 10 ? `0` + date.getDate() : date.getDate()
-                const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
-                const year = date.getFullYear()
-                // console.log('date', `${year}-${month}-${day}`)
-                window.location.href = `/edit/${year}-${month}-${day}`
-            }}
-        />
+        <div>
+            {isLoading ? '...' :
+
+                <Calendar {...props}
+                    plugins={[dayGridPlugin]}
+                    initialView="dayGridMonth"
+                    contentHeight="auto"
+                    navLinks="true"
+                    timeZone="local"
+                    events={filteredEvents}
+                    navLinkDayClick={(date) => {
+                        // console.log('day', date.toISOString().slice(0, 10));
+                        const day = date.getDate() < 10 ? `0` + date.getDate() : date.getDate()
+                        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+                        const year = date.getFullYear()
+                        // console.log('date', `${year}-${month}-${day}`)
+                        window.location.href = `/edit/${year}-${month}-${day}`
+                    }}
+                />
+            }
+        </div>
     );
 }
