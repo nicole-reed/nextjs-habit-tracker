@@ -42,11 +42,6 @@ nav {
   margin-right: 1rem;
 }
 
-#navName:hover {
-  color: #68b5e2;
-  font-weight: bolder;
-}
-
 li {
   width: auto;
 }
@@ -224,6 +219,10 @@ img {
   grid-gap: 1rem;
 }
 
+.section-footer .col {
+  place-self: center;
+}
+
 .section-footer h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -236,7 +235,7 @@ img {
 }
 
 .section-footer a {
-  line-height: 1.9;
+  /* line-height: 1.9; */
   color: #ccc;
   font-weight: 200;
 }
@@ -260,6 +259,19 @@ img {
     padding-top:
   } */
 
+  .navItems {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: stretch;
+    justify-content: space-evenly;
+    font-size: smaller;
+  }
+
+  .navItem {
+    display: inline-block;
+    margin-right: .5rem;
+  }
 
   .section-a .cont {
     grid-template-columns: 1fr;
