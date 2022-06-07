@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* font-weight: 200; */
 }
 
 main {
@@ -78,8 +79,15 @@ li {
 h1,
 h2,
 h3,
-h4 {
+h4,
+p,
+li,
+button,
+.fc-event-title,
+.fc-toolbar-chunk,
+.fc-button {
   line-height: 1.3;
+  font-weight: 200;
 }
 
 
@@ -267,9 +275,9 @@ img {
 }
 
 @media (max-width: 700px) {
-  /* .logo {
-    padding-top:
-  } */
+  #logo {
+    display: none;
+  }
 
   .navItems {
     padding: 0;
@@ -352,7 +360,7 @@ tbody tr:nth-of-type(odd) {
 }
 
 .habits {
-    margin: auto;
+    padding: 0px;
 }
 
 .habits button {
@@ -366,6 +374,12 @@ label {
     padding-left: 0.4rem;
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
 .habit-list p{
   min-width: 30%;
   max-width: 50%;
@@ -398,9 +412,11 @@ line-height: 1.3rem;
 @media only screen and (max-width: 600px) {
     .fc-event-title {
         font-size: .5em;
+        font-weight: 200;
     }
     .fc-toolbar-chunk {
         font-size: .75em;
+        font-weight: 200;
     }
 }
 
@@ -458,6 +474,17 @@ line-height: 1.3rem;
     margin-bottom: 25px;
   }
 
+  .modal-body {
+    padding: .5rem;
+    text-align: center;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-around;
+    padding: .5rem;
+  }
+
   /* The Modal Close Button (x) */
   .close {
     position: absolute;
@@ -466,6 +493,14 @@ line-height: 1.3rem;
     font-size: 40px;
     font-weight: bold;
     color: #f1f1f1;
+  }
+
+  .delete-btn {
+    background-color: red;
+  }
+  .delete-btn:hover{
+    background-color: white;
+    color: red;
   }
 
   .close:hover,

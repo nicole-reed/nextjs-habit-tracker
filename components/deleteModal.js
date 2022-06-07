@@ -10,7 +10,7 @@ const DeleteConfirmation = ({ showModal, hideModal, confirmModal, habitid, messa
                 <Button variant="default" onClick={hideModal}>
                     Cancel
           </Button>
-                <Button variant="danger" onClick={() => confirmModal(habitid)}>
+                <Button className='delete-btn' variant="danger" onClick={() => confirmModal(habitid)}>
                     Delete
           </Button>
             </Modal.Footer>

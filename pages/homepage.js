@@ -97,7 +97,7 @@ export default function Homepage() {
                                 <h1>Today's Habits</h1>
 
                                 {usersHabits && log ?
-                                    <ul>
+                                    <ul className='habits'>
                                         {usersHabits && usersHabits.map((habit) => (
 
                                             <li key={habit._id}>

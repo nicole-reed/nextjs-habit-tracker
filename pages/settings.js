@@ -107,7 +107,7 @@ export default function Settings() {
 
                             <h1>My habits</h1>
 
-                            <ul>
+                            <ul className='habits'>
                                 {usersHabits.map((habit) => (
                                     <li className='habit-list'>
                                         <p id={habit._id} key={habit._id}>{habit.name}
