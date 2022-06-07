@@ -30,6 +30,10 @@ nav {
   padding: .5rem;
 }
 
+button {
+  cursor: pointer;
+}
+
 .navItems {
   padding: 0;
   list-style: none;
@@ -217,11 +221,19 @@ img {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1rem;
+  justify-items: stretch;
+  align-items: baseline;
 }
 
 .section-footer .col {
   place-self: center;
 }
+
+.section-footer .icons {
+  display:flex;
+  justify-content: space-around;
+}
+
 
 .section-footer h2 {
   font-size: 2rem;
@@ -352,6 +364,35 @@ tbody tr:nth-of-type(odd) {
 
 label {
     padding-left: 0.4rem;
+}
+
+.habit-list p{
+  min-width: 30%;
+  max-width: 50%;
+  display: flex;
+  margin: auto;
+  justify-content: space-around;
+}
+
+.add-habit {
+border-width: 1.5px;
+border-radius: 5px;
+line-height: 1.3rem;
+}
+
+.add-habit-btn {
+  border-width: 1.5px;
+  border-radius: 5px;
+  line-height: 1.3rem;
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: 1px;
+}
+
+.delete-habit-btn {
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 @media only screen and (max-width: 600px) {

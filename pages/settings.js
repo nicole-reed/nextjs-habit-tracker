@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Script from 'next/script'
 import Layout from '../components/layout'
 import DeleteModal from '../components/deleteModal'
 import { useSession } from "next-auth/react"
@@ -99,26 +100,31 @@ export default function Settings() {
             <Layout>
 
                 <main>
-                    {isLoading ? '...' :
-                        <div>
+                    <Script src="https://kit.fontawesome.com/3c5f175f7a.js"></Script>
 
-                            <h1>
-                                My habits
-                    </h1>
-                            <ul className='habit-list'>
+                    {isLoading ? '...' :
+                        <div className='settings'>
+
+                            <h1>My habits</h1>
+
+                            <ul>
                                 {usersHabits.map((habit) => (
-                                    <li>
-                                        <p id={habit._id} key={habit._id}>{habit.name}</p>
-                                        <button id={habit._id} className='btn' onClick={() => showDeleteModal(habit._id)}>Delete</button>
+                                    <li className='habit-list'>
+                                        <p id={habit._id} key={habit._id}>{habit.name}
+                                            <div>
+                                                <button id={habit._id} className='delete-habit-btn' onClick={() => showDeleteModal(habit._id)}><i class="fa-solid fa-trash-can"></i></button>
+
+                                            </div>
+                                        </p>
                                     </li>
                                 ))}
                             </ul>
 
 
-                            <form onSubmit={addHabit}>
-                                <input id='habit' name='habit' type="text" placeholder='add a habit' required />
+                            <form className='add-habit-form' onSubmit={addHabit}>
+                                <input className='add-habit' id='habit' name='habit' type="text" placeholder='add a habit' required />
 
-                                <button type='submit'>add habit</button>
+                                <button className='add-habit-btn' type='submit'>Add Habit</button>
                             </form>
 
                         </div>

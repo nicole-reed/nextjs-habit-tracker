@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 
-export default function Homepage() {
+export default function Edit() {
     const { data: session } = useSession()
     const router = useRouter()
     const { date } = router.query
@@ -14,7 +14,6 @@ export default function Homepage() {
     const [habitsCompleted, setHabitsCompleted] = useState([])
     const habitIDs = Object.keys(habitsCompleted)
     const [isLoading, setLoading] = useState(true)
-
 
     const getHabits = async () => {
         try {
@@ -98,7 +97,7 @@ export default function Homepage() {
 
                     {isLoading ? '...' :
                         <div>
-                            <h2>Log for {date}</h2>
+                            <h2>Log for {`${date.slice(8, 10)}/${date.slice(5, 7)}/${date.slice(0, 4)}`}</h2>
                             {usersHabits && log ?
                                 <ul>
                                     {usersHabits && usersHabits.map((habit) => (

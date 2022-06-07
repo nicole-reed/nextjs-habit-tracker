@@ -1,9 +1,7 @@
 import Head from 'next/head'
 import Nav from '../components/nav'
 import Script from 'next/script'
-// import { useSession, signIn, signOut } from "next-auth/react"
 import Image from 'next/image'
-
 import workout from '../public/habit-images/workout.jpeg'
 import journal from '../public/habit-images/journal.jpeg'
 import walk from '../public/habit-images/walk.jpeg'
@@ -65,16 +63,18 @@ export default function Welcome() {
       <footer className="section-footer">
         <div className="cont">
           <div className="col">
-            <h2>Connect with us on social media.</h2>
-            <a href="http://twitter.com">
-              <i className="fa-brands fa-twitter fa-2x"></i>
-            </a>
-            <a href="http://facebook.com">
-              <i className="fab fa-facebook fa-2x"></i>
-            </a>
-            <a href="http://instagram.com">
-              <i className="fa-brands fa-instagram fa-2x"></i>
-            </a>
+            <h2>Connect with us.</h2>
+            <div className="icons">
+              <a href="http://twitter.com">
+                <i className="fa-brands fa-twitter fa-2x"></i>
+              </a>
+              <a href="http://facebook.com">
+                <i className="fab fa-facebook fa-2x"></i>
+              </a>
+              <a href="http://instagram.com">
+                <i className="fa-brands fa-instagram fa-2x"></i>
+              </a>
+            </div>
           </div>
           <div className="col">
             <h2>Need Some Inspo?</h2>

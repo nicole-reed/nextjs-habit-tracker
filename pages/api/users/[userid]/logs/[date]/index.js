@@ -86,9 +86,8 @@ export default async function handler(req, res) {
                             success: true,
                             log: foundlog
                         });
-                    } else {
-                        throw new NotFoundError('No log found')
                     }
+                    return res.send(`no log for ${date}`)
                 } catch (error) {
                     handleError(error, res)
                 }
