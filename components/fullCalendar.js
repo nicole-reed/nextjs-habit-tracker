@@ -1,7 +1,7 @@
 import Calendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 // import styles from './Fullcalendar.module.scss';
-import { useSession } from "next-auth/react"
+import { getSession, useSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -13,6 +13,7 @@ export default function FullCalendar(props) {
 
     const getHabits = async () => {
         try {
+            const session = await getSession()
             const res = await axios.get(`api/users/${session.user.id}/habits`)
             const names = res.data.habits.map(habit => habit.name)
             setHabitNames(names)
@@ -27,6 +28,7 @@ export default function FullCalendar(props) {
     const getLogs = async () => {
         try {
             setLoading(true)
+            const session = await getSession()
             const res = await axios.get(`/api/users/${session.user.id}/logs`)
 
             setLogs(res.data.logs)

@@ -39,93 +39,80 @@ const updateLogByDateRunType = Record({
 })
 
 export default async function handler(req, res) {
-    const session = await getSession({ req })
     const habit = req.body
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "POST":
-            if (session) {
-                try {
-                    const validatedRequest = postLogByDateRunType.check(req)
-                    const { userid, date } = validatedRequest.query
-                    const { habitID, habitName } = validatedRequest.body
-                    const user = await User.findOne({ _id: userid })
-                    const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
+            try {
+                const validatedRequest = postLogByDateRunType.check(req)
+                const { userid, date } = validatedRequest.query
+                const { habitID, habitName } = validatedRequest.body
+                const user = await User.findOne({ _id: userid })
+                const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
 
-                    if (foundlog) {
-                        throw new BadRequestError('Log already exists')
-                    }
-
-                    if (user && !foundlog) {
-                        // const habitId = habit.habitID
-                        // const habitName = habit.habitName
-                        const newLog = await new Log({ userid: userid, date: date, habitsCompleted: { [`${habitID}`]: habitName } })
-
-                        await newLog.save()
-                        return res.status(200).send(`created log for ${newLog.date}`)
-                    } else {
-                        throw new NotFoundError('No user found')
-                    }
-                } catch (error) {
-                    handleError(error, res)
+                if (foundlog) {
+                    throw new BadRequestError('Log already exists')
                 }
-            } else {
-                console.log('Not logged in')
+
+                if (user && !foundlog) {
+                    // const habitId = habit.habitID
+                    // const habitName = habit.habitName
+                    const newLog = await new Log({ userid: userid, date: date, habitsCompleted: { [`${habitID}`]: habitName } })
+
+                    await newLog.save()
+                    return res.status(200).send(`created log for ${newLog.date}`)
+                } else {
+                    throw new NotFoundError('No user found')
+                }
+            } catch (error) {
+                handleError(error, res)
             }
         case "GET":
-            if (session) {
-                try {
-                    const validatedRequest = getLogByDateRunType.check(req)
-                    const { userid, date } = validatedRequest.query
+            try {
+                const validatedRequest = getLogByDateRunType.check(req)
+                const { userid, date } = validatedRequest.query
 
-                    const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
+                const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
 
-                    if (foundlog) {
-                        return res.status(200).json({
-                            success: true,
-                            log: foundlog
-                        });
-                    }
-                    return res.send(`no log for ${date}`)
-                } catch (error) {
-                    handleError(error, res)
+                if (foundlog) {
+                    return res.status(200).json({
+                        success: true,
+                        log: foundlog
+                    });
                 }
-            } else {
-                console.log('Not logged in')
+                return res.send(`no log for ${date}`)
+            } catch (error) {
+                handleError(error, res)
             }
         case "PATCH":
-            if (session) {
-                try {
-                    const validatedRequest = updateLogByDateRunType.check(req)
-                    const { userid, date } = validatedRequest.query
-                    const { habitID, habitName } = validatedRequest.body
+            try {
+                const validatedRequest = updateLogByDateRunType.check(req)
+                const { userid, date } = validatedRequest.query
+                const { habitID, habitName } = validatedRequest.body
 
-                    const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
+                const foundlog = await Log.findOne({ userid: userid, date: date }).exec()
 
-                    if (foundlog) {
-                        if (habit.complete == true) {
-                            const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitID}`]: habitName })
-                            return res.status(200).json({
-                                success: true,
-                                log: updatedLog
-                            })
-                        } else {
-                            // const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
-                            const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { $unset: { [`habitsCompleted.${habitID}`]: ' ' } })
-                            return res.status(200).json({
-                                success: true,
-                                log: updatedLog
-                            })
-                        }
+                if (foundlog) {
+                    if (habit.complete == true) {
+                        const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitID}`]: habitName })
+                        return res.status(200).json({
+                            success: true,
+                            log: updatedLog
+                        })
                     } else {
-                        throw new NotFoundError('No log found')
+                        // const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
+                        const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { $unset: { [`habitsCompleted.${habitID}`]: ' ' } })
+                        return res.status(200).json({
+                            success: true,
+                            log: updatedLog
+                        })
                     }
-                } catch (error) {
-                    handleError(error, res)
+                } else {
+                    throw new NotFoundError('No log found')
                 }
-            } else {
-                console.log('Not signed in')
+            } catch (error) {
+                handleError(error, res)
             }
         default:
             return res.status(400).send("No such API route");

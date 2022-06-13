@@ -1,27 +1,8 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
 import FullCalendar from '../components/fullCalendar'
-import { useSession } from "next-auth/react"
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 export default function Calendar() {
-    const { data: session } = useSession()
-    const [logs, setLogs] = useState([])
-
-    const getLogs = async () => {
-        try {
-            const res = await axios.get(`/api/users/${session.user.id}/logs`)
-
-            setLogs(res.data.logs)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    useEffect(() => {
-        getLogs()
-    }, [session])
-
     return (
         <div>
             <Head>

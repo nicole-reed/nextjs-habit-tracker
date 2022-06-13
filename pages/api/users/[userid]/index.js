@@ -13,53 +13,44 @@ const getUserByIdRunType = Record({
 })
 
 export default async function handler(req, res) {
-    const session = await getSession({ req })
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
-            if (session) {
-                try {
-                    const validatedRequest = getUserByIdRunType.check(req)
-                    const { userid } = validatedRequest.query
+            try {
+                const validatedRequest = getUserByIdRunType.check(req)
+                const { userid } = validatedRequest.query
 
-                    const foundUser = await User.findOne({ _id: userid });
-                    // Check if any user found
-                    if (foundUser) {
-                        return res.status(200).json({
-                            success: true,
-                            User: foundUser
-                        });
-                    } else {
-                        throw new NotFoundError('No user found')
-                    }
-                } catch (error) {
-                    handleError(error, res)
+                const foundUser = await User.findOne({ _id: userid });
+                // Check if any user found
+                if (foundUser) {
+                    return res.status(200).json({
+                        success: true,
+                        User: foundUser
+                    });
+                } else {
+                    throw new NotFoundError('No user found')
                 }
-            } else {
-                console.log('Not signed in')
+            } catch (error) {
+                handleError(error, res)
             }
         case "DELETE":
-            if (session) {
-                try {
-                    const validatedRequest = getUserByIdRunType.check(req)
-                    const { userid } = validatedRequest.query
+            try {
+                const validatedRequest = getUserByIdRunType.check(req)
+                const { userid } = validatedRequest.query
 
-                    const foundUser = await User.findOne({ _id: userid });
+                const foundUser = await User.findOne({ _id: userid });
 
-                    if (foundUser) {
-                        await User.findByIdAndDelete({ _id: userid })
+                if (foundUser) {
+                    await User.findByIdAndDelete({ _id: userid })
 
-                        console.log('deleted user')
-                    } else {
-                        throw new NotFoundError('No user found')
-                    }
-
-                } catch (error) {
-                    handleError(error, res)
+                    console.log('deleted user')
+                } else {
+                    throw new NotFoundError('No user found')
                 }
-            } else {
-                console.log('Not signed in')
+
+            } catch (error) {
+                handleError(error, res)
             }
 
         default:

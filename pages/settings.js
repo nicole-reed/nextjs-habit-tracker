@@ -2,14 +2,22 @@ import Head from 'next/head'
 import Script from 'next/script'
 import Layout from '../components/layout'
 import DeleteModal from '../components/deleteModal'
-import { useSession } from "next-auth/react"
+import { getSession, useSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 export default function Settings() {
-    const { data: session } = useSession()
+    const { data: session } = useSession({
+        required: true, onUnauthenticated() {
+            // The user is not authenticated, handle it here.
+            console.log('in unauthenticated')
+        },
+    })
     const [habits, setHabits] = useState({})
+    const [usersHabits, setUsersHabits] = useState([])
     const [isLoading, setLoading] = useState(true)
+    console.log('habits', habits)
+    console.log('usersHabits', usersHabits)
 
     // For delete modal
     const [habitid, setHabitId] = useState(null);
@@ -20,9 +28,14 @@ export default function Settings() {
     const getHabits = async () => {
         try {
             setLoading(true)
+            const session = await getSession()
             const res = await axios.get(`/api/users/${session.user.id}/habits`)
+            const habits = res.data.habits
+            if (habits.length > 0) {
 
-            setHabits(res.data.habits)
+                setUsersHabits(habits.filter(habit => habit.userid === session.user.id))
+            }
+            setHabits(habits)
             setLoading(false)
         } catch (error) {
             console.log(error)
@@ -30,12 +43,13 @@ export default function Settings() {
     }
     useEffect(() => {
         getHabits()
-    }, [session])
+    }, [])
 
 
     const addHabit = async event => {
         try {
-            // event.preventDefault()
+            event.preventDefault()
+            const session = await getSession()
             const reqBody = { habit: event.target.habit.value, userid: session.user.id }
 
             await axios.post(`/api/habits`, reqBody)
@@ -45,21 +59,12 @@ export default function Settings() {
             console.log(error)
         }
     }
-    // const deleteHabit = async (habitid) => {
-    //     try {
-    //         await axios.delete(`/api/habits/${habitid}`)
 
-    //         getHabits()
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
+    // let usersHabits = []
+    // if (habits.length > 0) {
+
+    //     usersHabits = habits.filter(habit => habit.userid === session.user.id)
     // }
-
-    let usersHabits = []
-    if (habits.length > 0) {
-
-        usersHabits = habits.filter(habit => habit.userid === session.user.id)
-    }
 
 
     // Handle the displaying of the modal based on id
@@ -105,27 +110,26 @@ export default function Settings() {
                     {isLoading ? '...' :
                         <div className='settings'>
 
-                            <h1>My habits</h1>
+                            <h1 className='habit-list-title'>My habits</h1>
 
-                            <ul className='habits'>
-                                {usersHabits.map((habit) => (
-                                    <li className='habit-list'>
-                                        <p id={habit._id} key={habit._id}>{habit.name}
-                                            <div>
-                                                <button id={habit._id} className='delete-habit-btn' onClick={() => showDeleteModal(habit._id)}><i class="fa-solid fa-trash-can"></i></button>
+                            <div className='habits-container'>
+                                <ul className='habits'>
+                                    {usersHabits.map((habit) => (
+                                        <li key={habit._id} className='habit-list'>
+                                            <p id={habit._id}>{habit.name}</p>
+                                            <button id={habit._id} className='delete-habit-btn' onClick={() => showDeleteModal(habit._id)}><i className="fa-solid fa-trash-can"></i></button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <form className='add-habit-form' onSubmit={addHabit}>
+                                    <input className='add-habit' id='habit' name='habit' type="text" placeholder='Add a habit' required />
 
-                                            </div>
-                                        </p>
-                                    </li>
-                                ))}
-                            </ul>
+                                    <button className='add-habit-btn' type='submit'>+</button>
+                                </form>
+                            </div>
 
 
-                            <form className='add-habit-form' onSubmit={addHabit}>
-                                <input className='add-habit' id='habit' name='habit' type="text" placeholder='add a habit' required />
 
-                                <button className='add-habit-btn' type='submit'>Add Habit</button>
-                            </form>
 
                         </div>
                     }

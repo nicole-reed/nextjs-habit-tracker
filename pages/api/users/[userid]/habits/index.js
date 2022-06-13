@@ -17,29 +17,23 @@ export default async function handler(req, res) {
     const { method } = req;
     switch (method) {
         case "GET":
-            const session = await getSession({ req })
-            if (session) {
-                try {
 
-                    const validatedRequest = getHabitsByUserIdRunType.check(req)
-                    const { userid } = validatedRequest.query
-                    const foundHabitsByUserId = await Habit.find({ userid: userid }).exec();
+            try {
 
-                    if (foundHabitsByUserId) {
-                        return res.status(200).json({
-                            success: true,
-                            habits: foundHabitsByUserId
-                        });
-                    } else {
-                        throw new NotFoundError('No habits found')
-                    }
-                } catch (error) {
-                    handleError(error, res)
+                const validatedRequest = getHabitsByUserIdRunType.check(req)
+                const { userid } = validatedRequest.query
+                const foundHabitsByUserId = await Habit.find({ userid: userid }).exec();
+
+                if (foundHabitsByUserId) {
+                    return res.status(200).json({
+                        success: true,
+                        habits: foundHabitsByUserId
+                    });
+                } else {
+                    throw new NotFoundError('No habits found')
                 }
-            } else {
-                // Not Signed in
-                console.log('Not signed in')
-                res.status(401)
+            } catch (error) {
+                handleError(error, res)
             }
         default:
             return res.status(400).send("No such API route");

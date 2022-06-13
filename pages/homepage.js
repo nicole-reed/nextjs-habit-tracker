@@ -1,26 +1,27 @@
 import Head from 'next/head'
 import Layout from '../components/layout'
-import { getSession, useSession } from "next-auth/react"
+import { useSession, getSession } from "next-auth/react"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 export default function Homepage() {
-    const { data: session } = useSession()
-    console.log('session', session)
+    const { data: session } = useSession({
+        required: true, onUnauthenticated() {
+            console.log('in unauthenticated')
+        },
+    })
     const [habits, setHabits] = useState({})
     const today = new Date().toISOString().slice(0, 10)
     const [log, setLog] = useState({})
     const [habitsCompleted, setHabitsCompleted] = useState([])
-    const habitIDs = Object.keys(habitsCompleted)
     const [isLoading, setLoading] = useState(true)
 
     const getHabits = async () => {
         try {
-            setLoading(true)
+            const session = await getSession()
             const res = await axios.get(`/api/users/${session.user.id}/habits`)
 
             setHabits(res.data.habits)
-            setLoading(false)
         } catch (error) {
             console.log(error.message)
         }
@@ -29,15 +30,20 @@ export default function Homepage() {
         getHabits()
     }, [session])
 
-
     const getLog = async () => {
         try {
-            const res = await axios.get(`/api/users/${session.user.id}/logs/${today}`)
-            const log = res.data.log
-            const habits = res.data.log.habitsCompleted
+            setLoading(true)
+            const session = await getSession()
+            const logRes = await axios.get(`/api/users/${session.user.id}/logs/${today}`)
+            const log = logRes.data.log
+            if (log) {
+                const habits = Object.keys(log.habitsCompleted)
+                setLog(log)
+                setHabitsCompleted(habits)
+                getHabits()
+            }
 
-            setLog(log)
-            setHabitsCompleted(habits)
+            setLoading(false)
         } catch (error) {
             console.log(error.message)
         }
@@ -48,6 +54,7 @@ export default function Homepage() {
 
     const updateLog = async event => {
         try {
+            const session = await getSession()
             if (event.target.checked) {
                 const reqBody = { habitID: event.target.id, habitName: event.target.name, complete: true }
                 await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
@@ -65,6 +72,7 @@ export default function Homepage() {
 
     const createLog = async event => {
         try {
+            const session = await getSession()
             const reqBody = { habitID: event.target.id, habitName: event.target.name }
 
             await axios.post(`/api/users/${session.user.id}/logs/${today}`, reqBody)
@@ -76,7 +84,7 @@ export default function Homepage() {
     }
 
     let usersHabits = []
-    if (habits.length > 0) {
+    if (session && habits.length > 0) {
 
         usersHabits = habits.filter(habit => habit.userid === session.user.id)
     }
@@ -94,21 +102,25 @@ export default function Homepage() {
                     <main>
                         {isLoading ? '...' :
                             <div>
-                                <h1>Today's Habits</h1>
+                                <h1 className='habit-list-title'>Today's Habits</h1>
 
                                 {usersHabits && log ?
-                                    <ul className='habits'>
-                                        {usersHabits && usersHabits.map((habit) => (
+                                    <div className='habits-container'>
+                                        <ul className='habits'>
+                                            {usersHabits && usersHabits.map((habit) => (
 
-                                            <li key={habit._id}>
-                                                <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitIDs.includes(habit._id) ? true : false} onChange={log._id || habitIDs.length > 0 ? updateLog : createLog} />
-                                                <label className="habit-name" htmlFor={habit._id}>
-                                                    {habit.name}
-                                                </label>
-                                            </li>
+                                                <li key={habit._id}>
+                                                    <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitsCompleted.includes(habit._id) ? true : false} onChange={log._id || habitsCompleted.length > 0 ? updateLog : createLog} />
+                                                    <label className="habit-name" htmlFor={habit._id}>
+                                                        {habit.name}
+                                                    </label>
+                                                </li>
 
-                                        ))}
-                                    </ul>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+
                                     : ''}
                             </div>}
                     </main>
@@ -119,3 +131,4 @@ export default function Homepage() {
         </>
     )
 }
+
