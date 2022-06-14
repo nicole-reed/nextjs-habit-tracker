@@ -1,9 +1,7 @@
 import { SessionProvider } from 'next-auth/react'
-// import { ToastProvider } from 'react-toast-notifications'
 import '../styles/globals.css'
 import '@fullcalendar/common/main.css'
 import '@fullcalendar/daygrid/main.css'
-// import 'bootstrap/dist/css/bootstrap.css'
 
 
 // Use the <Provider> to improve performance and allow components that call
@@ -28,14 +26,8 @@ export default function App({ Component, pageProps: { session, ...pageProps }, }
         // windows / tabs will be updated to reflect the user is signed out.
         keepAlive: 0
       }} >
-      {/* <ToastProvider autoDismiss={true} autoDismissTimeout='2000' placement='bottom-center'> */}
 
       <Component {...pageProps} />
-      {/* </ToastProvider> */}
-
-
-
-
     </SessionProvider>
   )
 }

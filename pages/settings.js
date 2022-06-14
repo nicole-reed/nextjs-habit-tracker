@@ -16,8 +16,6 @@ export default function Settings() {
     const [habits, setHabits] = useState({})
     const [usersHabits, setUsersHabits] = useState([])
     const [isLoading, setLoading] = useState(true)
-    console.log('habits', habits)
-    console.log('usersHabits', usersHabits)
 
     // For delete modal
     const [habitid, setHabitId] = useState(null);
@@ -59,13 +57,6 @@ export default function Settings() {
             console.log(error)
         }
     }
-
-    // let usersHabits = []
-    // if (habits.length > 0) {
-
-    //     usersHabits = habits.filter(habit => habit.userid === session.user.id)
-    // }
-
 
     // Handle the displaying of the modal based on id
     const showDeleteModal = async (habitid) => {
@@ -127,10 +118,6 @@ export default function Settings() {
                                     <button className='add-habit-btn' type='submit'>+</button>
                                 </form>
                             </div>
-
-
-
-
                         </div>
                     }
 

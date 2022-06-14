@@ -56,8 +56,6 @@ export default async function handler(req, res) {
                 }
 
                 if (user && !foundlog) {
-                    // const habitId = habit.habitID
-                    // const habitName = habit.habitName
                     const newLog = await new Log({ userid: userid, date: date, habitsCompleted: { [`${habitID}`]: habitName } })
 
                     await newLog.save()
@@ -101,7 +99,6 @@ export default async function handler(req, res) {
                             log: updatedLog
                         })
                     } else {
-                        // const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { [`habitsCompleted.${habitId}`]: habitName })
                         const updatedLog = await Log.findOneAndUpdate({ _id: foundlog._id }, { $unset: { [`habitsCompleted.${habitID}`]: ' ' } })
                         return res.status(200).json({
                             success: true,

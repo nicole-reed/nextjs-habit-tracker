@@ -69,8 +69,6 @@ export default function Edit() {
                 await axios.patch(`/api/users/${session.user.id}/logs/${date}`, reqBody)
             }
 
-            getLog()
-
         } catch (error) {
             console.log(error)
         }

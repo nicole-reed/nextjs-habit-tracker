@@ -63,8 +63,6 @@ export default function Homepage() {
                 await axios.patch(`/api/users/${session.user.id}/logs/${today}`, reqBody)
             }
 
-            getLog()
-
         } catch (error) {
             console.log(error.message)
         }
