@@ -275,7 +275,7 @@ img {
   color: #fff;
 }
 
-@media (max-width: 700px) {
+@media only screen and (max-width: 600px) {
   #logo {
     display: none;
   }
@@ -292,6 +292,20 @@ img {
   .navItem {
     display: inline-block;
     margin-right: .5rem;
+  }
+
+  .navItem a {
+    font-weight:normal;
+  }
+
+  .fc-event-title {
+    font-size: .5em;
+    font-weight: 200;
+  }
+  
+  .fc-toolbar-chunk {
+    font-size: .75em;
+    font-weight: 200;
   }
 
   .section-a .cont {
@@ -342,6 +356,52 @@ img {
 
 
 /* end landing page styles */
+
+
+h1.lighter {
+  font-weight: 200;
+}
+h2.error {
+  color: #68b5e2;
+}
+h3.lighter {
+  font-weight: 200;
+}
+h4.lighter {
+  color: #68b5e2;
+  font-weight: 200;
+}
+h5 {
+  font-weight: 200;
+}
+p.lighter {
+  font-weight: 300;
+}
+
+.form-check-input:checked {
+  background-color: #68b5e2;
+  border-color: #68b5e2;
+}
+
+.header{
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: white;
+  box-shadow: 0px 2px 9px 5px rgba(0,0,0,0.05);
+  z-index: 1000;
+  flex-direction: row;
+  font-size: 1rem;
+}
+
+.logs{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
 
 table {
     background-color: transparent;
@@ -436,17 +496,6 @@ text-align: center;
   color: white;
 }
 
-@media only screen and (max-width: 600px) {
-    .fc-event-title {
-        font-size: .5em;
-        font-weight: 200;
-    }
-    .fc-toolbar-chunk {
-        font-size: .75em;
-        font-weight: 200;
-    }
-}
-
 
 /* Delete Modal Styles */
 
@@ -483,7 +532,7 @@ text-align: center;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: #474e5d;
+    background-color: #5987a1;
     padding-top: 50px;
   }
 
@@ -491,7 +540,7 @@ text-align: center;
   .modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
+    border-radius: 5px;
     width: 80%; /* Could be more or less, depending on screen size */
   }
 
@@ -549,85 +598,3 @@ text-align: center;
       width: 100%;
     }
   }
-
-  h1.lighter {
-    font-weight: 200;
-  }
-  h2.error {
-    color: #68b5e2;
-  }
-  h3.lighter {
-    font-weight: 200;
-  }
-  h4.lighter {
-    color: #68b5e2;
-    font-weight: 200;
-  }
-  h5 {
-    font-weight: 200;
-  }
-  p.lighter {
-    font-weight: 300;
-  }
-
-  .form-check-input:checked {
-    background-color: #68b5e2;
-    border-color: #68b5e2;
-  }
-
-  .header{
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 30px;
-    padding-right: 30px;
-    background-color: white;
-    box-shadow: 0px 2px 9px 5px rgba(0,0,0,0.05);
-    z-index: 1000;
-    flex-direction: row;
-    font-size: 1rem;
-  }
-
-  .logs{
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-
-/* 
-  .container {
-    min-height: 100vh;
-    padding: 0 0.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .main {
-    padding: 5rem 0;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .footer {
-    width: 100%;
-    height: 100px;
-    border-top: 1px solid #eaeaea;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .footer a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-  } */
