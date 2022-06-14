@@ -122,7 +122,7 @@ export default function Homepage() {
                                     :
                                     <div>
                                         <h1 className='habit-list-title'>No habits yet...</h1>
-                                        <p>Go to your <a href='/settings'>settings</a> page to start setting some goals!</p>
+                                        <p>Go to your <a href='/settings'>settings</a> page to add some habits!</p>
                                     </div>
 
                                 }
