@@ -86,6 +86,7 @@ export default function Homepage() {
 
         usersHabits = habits.filter(habit => habit.userid === session.user.id)
     }
+
     return (
         <>
             <div>
@@ -100,33 +101,43 @@ export default function Homepage() {
                     <main>
                         {isLoading ? '...' :
                             <div>
-                                <h1 className='habit-list-title'>Today's Habits</h1>
+                                {usersHabits.length > 0 && log ?
+                                    <div>
+                                        <h1 className='habit-list-title'>Today's Habits</h1>
+                                        <div className='habits-container'>
+                                            <ul className='habits'>
+                                                {usersHabits && usersHabits.map((habit) => (
 
-                                {usersHabits && log ?
-                                    <div className='habits-container'>
-                                        <ul className='habits'>
-                                            {usersHabits && usersHabits.map((habit) => (
+                                                    <li key={habit._id}>
+                                                        <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitsCompleted.includes(habit._id) ? true : false} onChange={log._id || habitsCompleted.length > 0 ? updateLog : createLog} />
+                                                        <label className="habit-name" htmlFor={habit._id}>
+                                                            {habit.name}
+                                                        </label>
+                                                    </li>
 
-                                                <li key={habit._id}>
-                                                    <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitsCompleted.includes(habit._id) ? true : false} onChange={log._id || habitsCompleted.length > 0 ? updateLog : createLog} />
-                                                    <label className="habit-name" htmlFor={habit._id}>
-                                                        {habit.name}
-                                                    </label>
-                                                </li>
-
-                                            ))}
-                                        </ul>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    :
+                                    <div>
+                                        <h1 className='habit-list-title'>No habits yet...</h1>
+                                        <p>Go to your <a href='/settings'>settings</a> page to start setting some goals!</p>
                                     </div>
 
+                                }
+                            </div>
+                        }
 
-                                    : ''}
-                            </div>}
                     </main>
+
+
                 </Layout>
             </div>
 
 
         </>
     )
+
 }
 

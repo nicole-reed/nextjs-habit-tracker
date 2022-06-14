@@ -104,14 +104,14 @@ export default function Settings() {
                             <h1 className='habit-list-title'>My habits</h1>
 
                             <div className='habits-container'>
-                                <ul className='habits'>
+                                {usersHabits.length > 0 && <ul className='habits'>
                                     {usersHabits.map((habit) => (
                                         <li key={habit._id} className='habit-list'>
                                             <p id={habit._id}>{habit.name}</p>
                                             <button id={habit._id} className='delete-habit-btn' onClick={() => showDeleteModal(habit._id)}><i className="fa-solid fa-trash-can"></i></button>
                                         </li>
                                     ))}
-                                </ul>
+                                </ul>}
                                 <form className='add-habit-form' onSubmit={addHabit}>
                                     <input className='add-habit' id='habit' name='habit' type="text" placeholder='Add a habit' required />
 
