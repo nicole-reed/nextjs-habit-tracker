@@ -12,16 +12,16 @@ export default function Settings() {
             // The user is not authenticated, handle it here.
             console.log('in unauthenticated')
         },
-    })
-    const [habits, setHabits] = useState({})
-    const [usersHabits, setUsersHabits] = useState([])
-    const [isLoading, setLoading] = useState(true)
+    });
+    const [habits, setHabits] = useState({});
+    const [usersHabits, setUsersHabits] = useState([]);
+    const [isLoading, setLoading] = useState(true);
 
     // For delete modal
     const [habitid, setHabitId] = useState(null);
     const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
     const [deleteMessage, setDeleteMessage] = useState(null);
-    const [message, setMessage] = useState(null)
+    const [message, setMessage] = useState(null);
 
     const getHabits = async () => {
         try {
@@ -30,7 +30,6 @@ export default function Settings() {
             const res = await axios.get(`/api/users/${session.user.id}/habits`)
             const habits = res.data.habits
             if (habits.length > 0) {
-
                 setUsersHabits(habits.filter(habit => habit.userid === session.user.id))
             }
             setHabits(habits)
@@ -41,7 +40,7 @@ export default function Settings() {
     }
     useEffect(() => {
         getHabits()
-    }, [])
+    }, [session])
 
 
     const addHabit = async event => {
@@ -56,15 +55,12 @@ export default function Settings() {
         } catch (error) {
             console.log(error)
         }
-    }
+    };
 
     // Handle the displaying of the modal based on id
     const showDeleteModal = async (habitid) => {
         setHabitId(habitid);
-
         setDeleteMessage('Are you sure you want to delete the habit and its records?');
-
-
         setDisplayConfirmationModal(true);
     };
 
@@ -79,7 +75,6 @@ export default function Settings() {
             await axios.delete(`/api/habits/${habitid}`)
             setMessage('Habit was deleted succcessfully');
             setDisplayConfirmationModal(false);
-
             getHabits()
         } catch (error) {
             console.log(error.message)
@@ -103,7 +98,7 @@ export default function Settings() {
 
                             <h1 className='habit-list-title'>My habits</h1>
 
-                            <div className='habits-container'>
+                            <div>
                                 {usersHabits.length > 0 && <ul className='habits'>
                                     {usersHabits.map((habit) => (
                                         <li key={habit._id} className='habit-list'>
