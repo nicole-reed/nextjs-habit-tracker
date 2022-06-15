@@ -281,16 +281,15 @@ img {
   }
 
   .header {
-    justify-content: stretch;
+    align-items: center;
+    justify-content: space-around;
   }
 
   .navItems {
     padding: 0;
     list-style: none;
     display: flex;
-    justify-content: stretch;
     justify-content: space-evenly;
-    font-size: smaller;
   }
 
   .navItem {
@@ -387,7 +386,7 @@ p.lighter {
   border-color: #68b5e2;
 }
 
-.header{
+.header {
   position: sticky;
   top: 0;
   display: flex;
