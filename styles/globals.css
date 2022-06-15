@@ -301,6 +301,16 @@ img {
     font-weight:normal;
   }
 
+  .add-habit {
+    line-height: 1.5rem;
+    padding: .5rem;
+  }
+
+  .add-habit-btn {
+    line-height: 1.5rem;
+    padding: .5rem;
+  }
+
   .fc-event-title {
     font-size: .5em;
     font-weight: 200;
