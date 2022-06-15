@@ -280,6 +280,10 @@ img {
     display: none;
   }
 
+  .header {
+    justify-content: stretch;
+  }
+
   .navItems {
     padding: 0;
     list-style: none;
