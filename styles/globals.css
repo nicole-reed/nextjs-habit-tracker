@@ -301,6 +301,10 @@ img {
     font-weight:normal;
   }
 
+  .add-habit-btn {
+    margin-right: 5px;
+  }
+
   .fc-event-title {
     font-size: .5em;
     font-weight: 200;
