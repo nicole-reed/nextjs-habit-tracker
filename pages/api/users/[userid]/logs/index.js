@@ -13,25 +13,32 @@ const getLogsByUserIdRunType = Record({
 })
 
 export default async function handler(req, res) {
+    const session = await getSession({ req })
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
-            try {
-                const validatedRequest = getLogsByUserIdRunType.check(req)
-                const { userid } = validatedRequest.query
-                const foundLogsByUserId = await Log.find({ userid: userid }).exec();
+            if (session) {
+                try {
+                    const validatedRequest = getLogsByUserIdRunType.check(req)
+                    const { userid } = validatedRequest.query
+                    const foundLogsByUserId = await Log.find({ userid: userid }).exec();
 
-                if (!foundLogsByUserId) {
-                    throw new NotFoundError('Log not found')
+                    if (!foundLogsByUserId) {
+                        throw new NotFoundError('Log not found')
+                    }
+
+                    return res.status(200).json({
+                        success: true,
+                        logs: foundLogsByUserId
+                    });
+                } catch (error) {
+                    handleError(error, res)
                 }
-
-                return res.status(200).json({
-                    success: true,
-                    logs: foundLogsByUserId
-                });
-            } catch (error) {
-                handleError(error, res)
+            } else {
+                // Not signed in
+                console.log('Not signed in')
+                res.status(401)
             }
 
         default:

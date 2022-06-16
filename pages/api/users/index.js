@@ -6,23 +6,30 @@ import handleError from "../../../utils/handleError";
 import { getSession } from 'next-auth/react';
 
 export default async function handler(req, res) {
+    const session = await getSession({ req })
     await dbConnect();
     const { method } = req;
     switch (method) {
         case "GET":
-            try {
-                const foundUsers = await User.find();
-                // Check if any user found
-                if (foundUsers) {
-                    return res.status(200).json({
-                        success: true,
-                        Users: foundUsers
-                    });
-                } else {
-                    throw new NotFoundError('No users found')
+            if (session) {
+                try {
+                    const foundUsers = await User.find();
+                    // Check if any user found
+                    if (foundUsers) {
+                        return res.status(200).json({
+                            success: true,
+                            Users: foundUsers
+                        });
+                    } else {
+                        throw new NotFoundError('No users found')
+                    }
+                } catch (error) {
+                    handleError(error, res)
                 }
-            } catch (error) {
-                handleError(error, res)
+            } else {
+                // Not signed in
+                console.log('Not signed in')
+                res.status(401)
             }
 
         default:
