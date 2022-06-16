@@ -60,7 +60,7 @@ export default function Settings() {
     // Handle the displaying of the modal based on id
     const showDeleteModal = async (habitid) => {
         setHabitId(habitid);
-        setDeleteMessage('Are you sure you want to delete the habit and its records?');
+        setDeleteMessage('Are you sure you want to delete the habit and its records? This cannot be undone!');
         setDisplayConfirmationModal(true);
     };
 
