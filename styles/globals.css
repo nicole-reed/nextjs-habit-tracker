@@ -292,7 +292,7 @@ img {
   p,
   input,
   label {
-    line-height: 2;
+    line-height: 1.75;
     font-weight: 200;
   }
 
@@ -420,19 +420,6 @@ p.lighter {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
-/* 
-table {
-    background-color: transparent;
-    margin: auto;
-    margin-bottom: 1rem;
-    width: 80%;
-}
-
-table th,
-table td {
-    padding: 0.75rem;
-    vertical-align: middle;
-} */
 
 tbody tr:nth-of-type(odd) {
     background-color: rgb(179, 208, 255, 0.3)

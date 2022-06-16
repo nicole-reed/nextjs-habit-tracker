@@ -107,11 +107,12 @@ export default function Homepage() {
                                         <ul className='habits'>
                                             {usersHabits && usersHabits.map((habit) => (
 
-                                                <li key={habit._id}>
-                                                    <input id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitsCompleted.includes(habit._id) ? true : false} onChange={log._id || habitsCompleted.length > 0 ? updateLog : createLog} />
+                                                <li className='habit-list' key={habit._id}>
                                                     <label className="habit-name" htmlFor={habit._id}>
-                                                        {habit.name}
-                                                    </label>
+                                                        {habit.name} </label>
+                                                    <input className='habit-check' id={habit._id} name={habit.name} type="checkbox" defaultChecked={log && habitsCompleted.includes(habit._id) ? true : false} onChange={log._id || habitsCompleted.length > 0 ? updateLog : createLog} />
+
+
                                                 </li>
 
                                             ))}
