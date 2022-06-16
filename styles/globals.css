@@ -285,6 +285,15 @@ img {
     justify-content: space-around;
   }
 
+  h1,
+h2,
+h3,
+h4,
+p {
+  line-height: 2;
+  font-weight: 500;
+}
+
   .navItems {
     padding: 0;
     list-style: none;
